@@ -9,11 +9,16 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
 
-         <li class="nav-item">
+        <% if(currentUser) { %>
+        <li class="nav-item">
           <a class="nav-link" href="/wikis">Wikis</a>
          </li>
          <li>
             <a class="nav-link" href="/users/sign_out">Sign out</a>
+         </li>
+        <% } else { %>
+          <li class="nav-item">
+          <a class="nav-link" href="/wikis">Wikis</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/users/sign_up">Sign up</a>
@@ -21,8 +26,8 @@
           <li class="nav-item">
             <a class="nav-link" href="/users/sign_in">Sign in</a>
           </li>
-
       </ul>
+        <% }%>
     </div>
 
   </div>
