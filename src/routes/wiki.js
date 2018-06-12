@@ -12,4 +12,5 @@ router.post("/wikis/create", validation.validateWiki, wikiController.create);
 router.post("/wikis/:id/destroy", wikiController.destroy);
 router.post("/wikis/:id/update", validation.validateWiki, wikiController.update);
 
+
 module.exports = router;
