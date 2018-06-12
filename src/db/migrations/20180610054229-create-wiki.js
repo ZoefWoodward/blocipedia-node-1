@@ -38,7 +38,7 @@ module.exports = {
           key: "id",
           as: "userId"
         }
-      }
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
