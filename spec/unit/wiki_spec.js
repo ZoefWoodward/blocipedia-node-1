@@ -6,7 +6,7 @@ describe("Topic", ()=>{
 	
 	beforeEach((done) => {
      
-     this.topic;
+     this.wiki;
      this.user;
 
      sequelize.sync({force: true}).then((res) => {
@@ -15,7 +15,7 @@ describe("Topic", ()=>{
        	 username: "dangerzone",
          email: "starman@tesla.com",
          password: "Trekkie4lyfe",
-         role: "member"
+         role: "standard"
        })
        .then((user) => {
          this.user = user; //store the user
@@ -63,7 +63,7 @@ describe("Topic", ()=>{
 				done();
 			})
 		});
-	});
+    });
 
 });
 

@@ -16,7 +16,7 @@ describe("routes : wikis", () => {
         username: "masterchief",
         email: "admin@example.com",
         password: "123456789",
-        role: "member"
+        role: "standard"
       })
       .then((user) => {
         this.user = user;
@@ -165,4 +165,6 @@ describe("routes : wikis", () => {
       });
     });
   });
+
+
 });
