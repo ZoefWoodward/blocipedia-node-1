@@ -167,4 +167,43 @@ describe("routes : wikis", () => {
   });
 
 
+  describe("POST /wiki/:id/update ",()=>{
+
+     it("should update a wiki object of another user",(done)=>{
+       User.create({
+         username: "masterchief",
+         email: "starman@tesla.com",
+         password: "Trekkie4lyfe",
+         role: "standard"
+       })
+       .then((user) => {
+         this.user = user; //store the user
+         request.post({
+          url: `${base}${this.wiki.id}/update`,
+          form: {
+            title: "JavaScript Frameworks",
+          body: "There are a lot of them",
+            userId: this.user.id
+          }
+        }, (err, res, body) => {
+        expect(err).toBeNull();
+        Wiki.findOne({
+          where: {id:1}
+        })
+        .then((wiki) => {
+          expect(wiki.title).toBe("JavaScript Frameworks");
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+        });
+       }).catch((err) => {
+         console.log(err);
+         done();
+       });
+  });
+  });
+
 });
