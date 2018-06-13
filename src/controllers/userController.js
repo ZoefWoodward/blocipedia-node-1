@@ -1,6 +1,8 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
-
+const secretKey = process.env.SECRET_KEY;
+const publishableKey = process.env.PUBLISHABLE_KEY;
+const stripe = require("stripe")(secretKey);
 
 module.exports = {
 
@@ -49,5 +51,36 @@ module.exports = {
     req.logout();
     req.flash("notice","You've successfully signed out!");
     res.redirect("/");
+  },
+
+  //remember to change this to your live secret key in production: https://dashboard.stripe.com/account/apikeys
+  upgrade(req, res, next){
+    res.render("users/upgrade", {publishableKey});
+  },
+
+  payment(req, res, next){
+    let payment = 1500;
+    stripe.customers.create({
+      email: req.body.stripeEmail,
+      source:req.body.stripeToken,
+    }) .then((customer) => {
+      stripe.charges.create({
+        amount: payment,
+        description: "Blocipedia Premium Membership Charge",
+        currency: "usd",
+        customer: customer.id,
+      })
+    }) .then((charge) => {
+      userQueries.upgrade(req.user.dataValues.id);
+      res.render("users/payment_success");
+    })
+  },
+
+  downgrade(req, res, next){
+    userQueries.downgrade(req.user.dataValues.id);
+    req.flash("notice", "You are no longer a premium user!");
+    res.redirect("/");
   }
+
+
 }
