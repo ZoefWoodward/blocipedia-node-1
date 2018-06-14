@@ -16,7 +16,7 @@ describe("routes : wikis", () => {
         username: "masterchief",
         email: "admin@example.com",
         password: "123456789",
-        role: "standard"
+        role: "premium"
       })
       .then((user) => {
         this.user = user;
@@ -52,7 +52,7 @@ describe("routes : wikis", () => {
 
   describe("GET /wikis", () => {
     it("should render the wiki index page", (done) => {
-      request.get(base, (err, res, body) => {
+      request.get(`${base}private`, (err, res, body) => {
         expect(err).toBeNull();
         expect(body).toContain("Wikis");
         done();
@@ -77,6 +77,7 @@ describe("routes : wikis", () => {
         form: {
           title: "New wiki",
           body: "New wiki body",
+          private:true,
           userId: this.user.id
         }
       };
@@ -107,34 +108,13 @@ describe("routes : wikis", () => {
     });
   });
 
-  describe("POST /wikis/:id/destroy", () => {
-    it("should delete the wiki with the associated ID", (done) => {
-      Wiki.all()
-      .then((wikis) => {
-        const wikiCountBeforeDelete = wikis.length;
-        expect(wikiCountBeforeDelete).toBe(1);
-        request.post(`${base}${this.wiki.id}/destroy`, (err, res, body) => {
-          Wiki.all()
-          .then((wikis) => {
-            expect(err).toBeNull();
-            expect(wikis.length).toBe(wikiCountBeforeDelete - 1);
-            done();
-          })
-          .catch((err) => {
-            console.log(err);
-            done();
-          })
-        });
-      })
-    });
-  });
+
 
   describe("GET /wikis/:id/edit", () => {
     it("should render a view with an edit wiki form", (done) => {
       request.get(`${base}${this.wiki.id}/edit`, (err, res, body) => {
         expect(err).toBeNull();
         expect(body).toContain("Edit Wiki");
-        expect(body).toContain("JS frameworks");
         done();
       });
     });
@@ -205,5 +185,28 @@ describe("routes : wikis", () => {
        });
   });
   });
+
+    describe("POST /wikis/:id/destroy", () => {
+    it("should delete the wiki with the associated ID", (done) => {
+      Wiki.all()
+      .then((wikis) => {
+        const wikiCountBeforeDelete = wikis.length;
+        expect(wikiCountBeforeDelete).toBe(1);
+        request.post(`${base}${this.wiki.id}/destroy`, (err, res, body) => {
+          Wiki.all()
+          .then((wikis) => {
+            expect(err).toBeNull();
+            expect(wikis.length).toBe(wikiCountBeforeDelete - 1);
+            done();
+          })
+          .catch((err) => {
+            console.log(err);
+            done();
+          })
+        });
+      })
+    });
+  });
+
 
 });
