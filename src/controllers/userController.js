@@ -55,7 +55,7 @@ module.exports = {
 
   //remember to change this to your live secret key in production: https://dashboard.stripe.com/account/apikeys
   upgrade(req, res, next){
-    res.render("users/upgrade", {secretKey});
+    res.render("users/upgrade", {publishableKey});
   },
 
   payment(req, res, next){
